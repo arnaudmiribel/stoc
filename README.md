@@ -4,7 +4,7 @@
 
 Learn how to generate table of contents in your Streamlit app! It's as easy as:
 
-```
+```python
 from stoc import stoc
 toc = stoc()
 
@@ -30,3 +30,5 @@ toc.toc()
 ```
 
 And you'll see the table of contents being generated in your sidebar:
+
+![stoc-demo](https://user-images.githubusercontent.com/7164864/153219373-efc78512-b53d-406e-9560-7c25a09b878f.gif)
