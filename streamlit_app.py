@@ -1,106 +1,71 @@
 import streamlit as st
-import unidecode
 
-st.session_state.toc = list()
+from stoc import stoc
 
+st.set_page_config(page_icon="📂", page_title="stoc: Table of contents in Streamlit", layout="centered")
+st.write("## 📂 stoc: Table of contents in Streamlit")
+st.write("This is a demo of stoc, a tool to help you create table of contents in Streamlit!")
+st.write("Learn more in the [repository](https://github.com/arnaudmiribel/stoc).")
 
-def make_anchor():
-    title_id = len(st.session_state.toc)
-    st.write(
-        f"""<span style="visibility:hidden;" id="title-{title_id}">""",
-        unsafe_allow_html=True,
-    )
+toc = stoc()
 
+toc.h1("Show me code!")
 
-def h1(text):
-    st.write(f"# {text}")
-    st.session_state.toc.append(("h1", text))
+"""This is how a table of contents gets generated using `stoc`:"""
 
+st.code("""
+from stoc import stoc
+toc = stoc()
 
-def h2(text):
-    st.write(f"## {text}")
-    st.session_state.toc.append(("h2", text))
+toc.h1("Demo")
+st.write("...")
 
+toc.h2("I want to talk about this")
+st.write("...")
 
-def h3(text):
-    st.write(f"### {text}")
-    st.session_state.toc.append(("h3", text))
+toc.h3("Smaller again")
+st.write("...")
 
+toc.h2("Another subtitle")
+st.write("...")
 
-def toc():
-    st.sidebar.title("Table of contents")
-    markdown_toc = ""
-    for title_size, title in st.session_state.toc:
-        h = int(title_size.replace("h", ""))
-        markdown_toc += " " * 2 * h + "- " + f"[{title}](#{normalize(title)})  \n"
-    st.sidebar.write(markdown_toc)
+toc.h3("I also should address that")
+st.write("...")
 
+toc.h2("Conclusion")
+st.write("...")
 
-def normalize(s):
-    """
-    Normalize titles as valid HTML ids for anchors
-    >>> normalize("it's a test to spot how Things happ3n héhé")
-    "it-s-a-test-to-spot-how-things-happ3n-h-h"
-    """
+toc.toc()
+""", "python")
 
-    # Replace accents with "-"
-    s_wo_accents = unidecode.unidecode(s)
-    accents = [s for s in s if s not in s_wo_accents]
-    for accent in accents:
-        s = s.replace(accent, "-")
+"""See that you can click on the different titles!"""
 
-    # Lowercase
-    s = s.lower()
+toc.h1("Demo")
 
-    # Keep only alphanum and remove "-" suffix if existing
-    normalized = (
-        "".join([char if char.isalnum() else "-" for char in s]).strip("-").lower()
-    )
+toc.h2("I want to talk about this")
 
-    return normalized
+"""
+Aliquam in mauris nulla. In convallis augue auctor, tincidunt lectus at, gravida lectus. Aliquam pellentesque porttitor nibh eget dapibus. Maecenas tincidunt mollis augue, non tincidunt elit fringilla eu. Ut ut arcu nec nibh bibendum pulvinar sed vitae massa. Vivamus condimentum eros ex, eu lobortis ante malesuada eu. Nulla consequat tortor eget rutrum luctus. Etiam sit amet sapien tincidunt, aliquam orci pellentesque, porta nulla. Nunc convallis imperdiet nulla, sed rutrum eros fermentum a. Pellentesque et rutrum nisi. Quisque placerat nisl quis ex feugiat pharetra. Vestibulum magna risus, elementum sed est non, pellentesque iaculis mauris. Nulla facilisi. Phasellus id mattis lorem.
 
-
-h1("This is my crazy app")
-
-h1("This is my crazy app")
-
-h2("it's a test to spot how Things happ3n héhé")
-
-# x = st.slider("Choose", 1, 10, key="widget_0")
-
-
-# st.write(st.session_state)
-
-st.write(
-    """And that's how things happen my dear you know -- 
-Lorem ipsum dolor mented ipsum dolor mented ipsum dolor mented 
-ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum
-ipsum dolor mented ipsum dolor mented ipsum dolor mented 
-ipsum dolor mented ipsum dolor mented ipsum dolor mented 
- """
-)
-
-h3("Smaller again")
-
-"""Just a detail"""
-
-h2("Another subtitle")
-
-"""And that's how things happen my dear you know -- Lorem ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented
+Vestibulum sed purus porttitor, mattis mauris et, consectetur ligula. Praesent molestie sollicitudin imperdiet. In euismod mollis congue. Donec consectetur maximus arcu, id tempus nulla. Duis eget nunc sollicitudin sapien dictum vestibulum. Nunc efficitur pulvinar ullamcorper. Duis id condimentum sapien. Nullam sit amet pellentesque est, at lacinia arcu. Pellentesque varius eleifend odio non lacinia. Praesent fermentum urna id risus luctus, eget ultricies sapien porttitor. Etiam eget sollicitudin augue, non imperdiet augue.
 """
 
-"""And that's how things happen my dear you know -- Lorem ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented
+toc.h3("Smaller again")
+
+"""Aliquam erat volutpat. Duis pulvinar lacus tortor, sed vestibulum metus vestibulum ut. Vivamus convallis blandit placerat. Aenean gravida magna lorem, ac interdum turpis aliquam vitae. Nullam hendrerit sed eros a pulvinar. Donec auctor tincidunt lacus quis porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam nunc dolor. Vivamus sed cursus ante, ut sodales nulla."""
+
+toc.h2("Another subtitle")
+
+"""Praesent et nisl at nisi fermentum molestie et eu nisi. Nulla condimentum purus ut neque mattis euismod. Donec tincidunt elit turpis, ut maximus diam rutrum non. Vestibulum consectetur ligula sem. Vestibulum auctor efficitur metus ac fermentum. Vivamus id venenatis ligula, eget ornare massa. In pretium accumsan dui, eget pellentesque erat pharetra at. Nulla lectus est, ullamcorper at lacinia in, gravida id leo. Praesent fringilla, lacus id euismod cursus, erat libero maximus nunc, in porta erat risus quis enim.
+
+Morbi varius mattis odio et malesuada. Maecenas ac iaculis odio. Morbi felis lorem, imperdiet non dolor et, imperdiet finibus ligula. Ut a velit sit amet nisl varius mollis. Aliquam ac congue mauris, non lobortis tortor. Vivamus sollicitudin purus in posuere tincidunt. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
 """
 
-"""And that's how things happen my dear you know -- Lorem ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented ipsum dolor mented
+toc.h3("I also should address that")
+
+toc.h2("Conclusion")
+
+"""Nunc feugiat rutrum finibus. Etiam eget lacinia sem, a mollis mauris. Maecenas ut egestas libero. Nam sed ipsum vel lorem ultrices molestie at at mi. Nullam vitae venenatis leo. Suspendisse lacinia urna dolor, vel malesuada metus ornare sed. Proin ut auctor eros, at sagittis erat. Maecenas sed nulla leo. Fusce sed enim ac lorem viverra elementum. Vivamus iaculis dignissim tortor non congue. In ac nisi faucibus tortor accumsan mollis. Curabitur vestibulum placerat elit, quis fermentum purus faucibus ut. Duis eleifend erat molestie, hendrerit purus vitae, volutpat neque. Mauris bibendum ornare orci ac mattis. Sed tincidunt diam magna, at pretium ligula ultrices at.
 """
 
-h1("Conclusion")
-
-"""What a great ride!"""
-
-toc()
-
-st.experimental_set_query_params(
-    **{k: v for k, v in st.session_state.items() if k != "toc"}
-)
+toc.toc()
