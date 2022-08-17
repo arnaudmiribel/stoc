@@ -1,10 +1,16 @@
+from textwrap import dedent
+
 import streamlit as st
 
 from stoc import stoc
 
-st.set_page_config(page_icon="📂", page_title="stoc: Table of contents in Streamlit", layout="centered")
+st.set_page_config(
+    page_icon="📂", page_title="stoc: Table of contents in Streamlit", layout="centered"
+)
 st.write("## 📂 stoc: Table of contents in Streamlit")
-st.write("This is a demo of stoc, a tool to help you create table of contents in Streamlit!")
+st.write(
+    "This is a demo of stoc, a tool to help you create table of contents in Streamlit!"
+)
 st.write("Learn more in the [repository](https://github.com/arnaudmiribel/stoc).")
 
 toc = stoc()
@@ -13,30 +19,69 @@ toc.h1("Show me code!")
 
 """This is how a table of contents gets generated using `stoc`:"""
 
-st.code("""
-from stoc import stoc
-toc = stoc()
+method1, method2 = st.tabs(["Interspersed with other code", "Block of markdown"])
 
-toc.h1("Demo")
-st.write("...")
+with method1:
+    st.code(
+        dedent(
+            """
+        from stoc import stoc
+        toc = stoc()
 
-toc.h2("I want to talk about this")
-st.write("...")
+        toc.h1("Demo")
+        st.write("...")
 
-toc.h3("Smaller again")
-st.write("...")
+        toc.h2("I want to talk about this")
+        st.write("...")
 
-toc.h2("Another subtitle")
-st.write("...")
+        toc.h3("Smaller again")
+        st.write("...")
 
-toc.h3("I also should address that")
-st.write("...")
+        toc.h2("Another subtitle")
+        st.write("...")
 
-toc.h2("Conclusion")
-st.write("...")
+        toc.h3("I also should address that")
+        st.write("...")
 
-toc.toc()
-""", "python")
+        toc.h2("Conclusion")
+        st.write("...")
+
+        toc.toc()
+        """
+        ),
+        "python",
+    )
+
+with method2:
+    st.code(
+        dedent(
+            """
+            from stoc import stoc
+
+            md = \"\"\"
+            # Demo
+            ...
+
+            ## I want to talk about this
+            ...
+
+            ### Smaller again
+            ...
+
+            ## Another subtitle
+            ...
+
+            ### I also should address that
+            ...
+
+            ## Conclusion
+            ...
+            \"\"\"
+            stoc.from_markdown(md)
+            """
+        ),
+        "python",
+    )
 
 """See that you can click on the different titles!"""
 
